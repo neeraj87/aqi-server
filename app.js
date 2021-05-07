@@ -10,7 +10,7 @@ const webSocketController = require('./src/controllers/aqi-web-socket-controller
 const dbConnectionService = require('./src/services/db-connection-service');
 
 dbConnectionService.connectToDb();
-//webSocketController.callAQIWebSocket();
+webSocketController.callAQIWebSocket();
 
 const api = require('./src/routes/api-routes');
 

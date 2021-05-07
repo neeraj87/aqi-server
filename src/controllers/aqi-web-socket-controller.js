@@ -1,7 +1,9 @@
 const WebSocket = require('ws');
+const aqiColorConstant = require('../utilities/aqi-color-constants.json');
+const aqiDataController = require('../controllers/aqi-data-controller');
 
 exports.callAQIWebSocket = () => {
-    const ws = new WebSocket('ws://city-ws.herokuapp.com', {
+    const ws = new WebSocket(process.env.WSS, {
         perMessageDeflate: false
     });
 
@@ -38,13 +40,10 @@ exports.callAQIWebSocket = () => {
                 aqiDataList.push({
                     city: aqiData.city,
                     aqi: parseFloat(aqiData.aqi).toFixed(2),
-                    aqiCategory: aqiCategory,
-                    aqiCategoryColor: aqiCategoryColor,
                     lastUpdated: Date.now()
                 });
             });
-            // console.log(data);
-            console.log(aqiDataList);
+            aqiDataController.createAQIData(aqiDataList);
         } catch (e) {
             console.log('--- error occurred: ' + e);
         }
