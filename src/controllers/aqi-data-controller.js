@@ -17,8 +17,8 @@ exports.createAQIData = async(aqiDataList) => {
         let result = await AqiRecords.findOne({
             city: aqiData.city,
             lastUpdated: {
-                $gt : startOfHour, 
-                $lt : endOfHour
+                $gte : startOfHour, 
+                $lte : endOfHour
             }
         });
         
