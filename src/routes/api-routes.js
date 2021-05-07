@@ -3,24 +3,16 @@ var router = express.Router();
 
 const aqiDataController = require('../controllers/aqi-data-controller');
 
-router.get('/', async (req, res, next) => {
-    await aqiDataController.getAQIData();
-    res.send('hello');
+router.get('/get-aqi-data', async (req, res, next) => {
+    let { city, start, end } = req.query;
+    let response = await aqiDataController.getAQIData(city, start, end);
+    res.json(response);
 });
 
-router.post('/', async (req, res, next) => {
-    let aqiDataList = [
-        {
-            "city": 'Lucknow',
-            "aqi": 74.90,
-            "aqiCategory": 'Satisfactory',
-            "aqiCategoryColor": '#66b266',
-            "lastUpdated": 1620392362334
-        }
-    ];
-
-    aqiDataController.createAQIData(aqiDataList);
-    res.send('hello');
+router.get('/min-max-aqi', async (req, res, next) => {
+    let { start, end } = req.query;
+    let response = await aqiDataController.getMaxMinAQI(start, end);
+    res.json(response);
 });
 
 module.exports = router;
