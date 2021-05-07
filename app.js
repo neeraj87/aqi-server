@@ -7,7 +7,10 @@ const mongoose = require('mongoose');
 var path = require('path');
 var port = process.env.PORT;
 
-//const api = require('./routes/api');
+const webSocketController = require('./src/controllers/aqi-web-socket-controller');
+//webSocketController.callAQIWebSocket();
+
+const api = require('./src/routes/api-routes');
 
 var app = express();
 
@@ -23,7 +26,7 @@ mongoose.connect(
 app.set('port', port);
 app.use(cors());
 
-// app.use('/api/v1', verifyToken, api);
+app.use('/api/v1', verifyToken, api);
 
 process.on('uncaughtException', function (err) {
     winston.log('info', '-------------- UNCAUGHT EXCEPTION: ' + err);
