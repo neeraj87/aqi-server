@@ -19,6 +19,10 @@ var app = express();
 app.set('port', port);
 app.use(cors());
 
+app.use('/test', (req, res) => {
+    res.send('Staying alive..staying alive..oh.oh.oh.oh..staying aliveeee');
+});
+
 app.use('/api/v1', verifyToken, api);
 
 process.on('uncaughtException', function (err) {
