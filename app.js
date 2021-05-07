@@ -3,25 +3,18 @@ require('dotenv').config();
 const express = require('express');                                                       
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
 var path = require('path');
 var port = process.env.PORT;
 
 const webSocketController = require('./src/controllers/aqi-web-socket-controller');
+const dbConnectionService = require('./src/services/db-connection-service');
+
+dbConnectionService.connectToDb();
 //webSocketController.callAQIWebSocket();
 
 const api = require('./src/routes/api-routes');
 
 var app = express();
-
-const db = require('./config/db').mongoURI;
-mongoose.connect(
-    db,
-    { 
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }
-).then(() => console.log('MongoDB Connected')).catch(err => console.log(err));
 
 app.set('port', port);
 app.use(cors());
