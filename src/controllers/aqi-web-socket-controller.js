@@ -1,5 +1,4 @@
 const WebSocket = require('ws');
-const aqiColorConstant = require('../utilities/aqi-color-constants.json');
 const aqiDataController = require('../controllers/aqi-data-controller');
 
 exports.callAQIWebSocket = () => {
