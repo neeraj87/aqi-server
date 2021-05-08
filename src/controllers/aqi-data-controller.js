@@ -13,6 +13,13 @@ exports.getAQIData = async (city, filterStart, filterEnd) => {
             $gte : moment().startOf('day').valueOf(), 
             $lte : moment().endOf('day').valueOf()
         };
+    } else if(filterStart === filterEnd) {
+        //if the filter start and end are same
+        //then convert it to the start and end of the day
+        aqiResultCondition.lastUpdated = {
+            $gte : moment(+filterStart).startOf('day').valueOf(), 
+            $lte : moment(+filterStart).endOf('day').valueOf()
+        };
     } else {
         aqiResultCondition.lastUpdated = {
             $gte : filterStart, 
