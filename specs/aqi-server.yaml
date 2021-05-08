@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: aqi server
+  version: '1.0'
+  contact:
+    name: Neeraj Jadhav
+    email: jadhav.neeraj87@gmail.com
+  description: API to return the AQI data
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /api/v1/get-aqi-data:
+    get:
+      summary: get AQI data for a given city
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                items:
+                  $ref: '#/components/schemas/AqiRecord'
+              examples:
+                example-1:
+                  value:
+                    - _id: 6095d482f7e36c00156533fa
+                      city: Pune
+                      aqi: 223.19
+                      lastUpdated: 1620432000888
+                      __v: 0
+                    - _id: 6096326e2942c89014433e2c
+                      city: Pune
+                      aqi: 223.32
+                      lastUpdated: 1620456046266
+                      __v: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - message
+              examples:
+                example-1:
+                  value:
+                    message: Please send name of the city in the request query
+      operationId: getAQIData
+      description: This API returns the AQI data for a given city between the given start and end date. If not dates are provided then by default it will return the AQI data for the current day
+      security:
+        - api-token: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: city
+          description: Name of the city for which the AQI data is requested
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: start
+          description: Start date in unix milliseconds
+        - schema:
+            type: string
+          in: query
+          name: end
+          description: End date in unix milliseconds
+      tags:
+        - aqi
+  /api/v1/min-max-aqi:
+    get:
+      summary: get city with min and max AQI point for a given time
+      tags:
+        - aqi
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  minAQI:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - _id
+                        - city
+                        - aqi
+                        - lastUpdated
+                        - __v
+                      properties:
+                        _id:
+                          type: string
+                          minLength: 1
+                        city:
+                          type: string
+                          minLength: 1
+                        aqi:
+                          type: number
+                        lastUpdated:
+                          type: number
+                        __v:
+                          type: number
+                  maxAQI:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - _id
+                        - city
+                        - aqi
+                        - lastUpdated
+                        - __v
+                      properties:
+                        _id:
+                          type: string
+                          minLength: 1
+                        city:
+                          type: string
+                          minLength: 1
+                        aqi:
+                          type: number
+                        lastUpdated:
+                          type: number
+                        __v:
+                          type: number
+                required:
+                  - minAQI
+                  - maxAQI
+              examples:
+                example-1:
+                  value:
+                    minAQI:
+                      - _id: 6095aa54f7e36c00156533dc
+                        city: Chandigarh
+                        aqi: 43.81
+                        lastUpdated: 1620421203226
+                        __v: 0
+                    maxAQI:
+                      - _id: 60965015864c6288bcdb2e15
+                        city: Delhi
+                        aqi: 302.54
+                        lastUpdated: 1620463636383
+                        __v: 0
+      operationId: getMaxMinAQI
+      description: Given a start and end time in query params the API returns the city with lowest AQI (good air quality) and city with highest AQI (severe air quality) within that time. If no time is provided then the API will by default return the data for the current day
+      security:
+        - api-token: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: start
+          description: Start date in unix milliseconds
+        - schema:
+            type: string
+          in: query
+          name: end
+          description: Enddate in unix milliseconds
+components:
+  schemas:
+    AqiRecord:
+      description: AqiRecord model as stored in the database
+      type: object
+      properties:
+        _id:
+          type: object
+          properties:
+            $oid:
+              type: string
+              minLength: 1
+          required:
+            - $oid
+        city:
+          type: string
+          minLength: 1
+        aqi:
+          type: number
+        lastUpdated:
+          type: number
+      required:
+        - _id
+        - city
+        - aqi
+        - lastUpdated
+      x-examples:
+        example-1:
+          _id:
+            $oid: 6096326e2942c89014433e2d
+          city: Hyderabad
+          aqi: 198.37
+          lastUpdated: 1620456046266
+      x-tags:
+        - aqi
+  securitySchemes:
+    api-token:
+      name: API Key
+      type: apiKey
+      in: header

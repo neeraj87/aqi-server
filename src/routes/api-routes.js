@@ -5,6 +5,12 @@ const aqiDataController = require('../controllers/aqi-data-controller');
 
 router.get('/get-aqi-data', async (req, res, next) => {
     let { city, start, end } = req.query;
+
+    if(!city) {
+        res.status(400).send({message: 'Please send name of the city in the request query'});
+        return;
+    }
+
     let response = await aqiDataController.getAQIData(city, start, end);
     res.json(response);
 });
