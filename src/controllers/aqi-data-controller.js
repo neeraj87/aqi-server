@@ -41,8 +41,8 @@ exports.getMaxMinAQI = async (filterStart, filterEnd) => {
 
     console.log(`aqiResultCondition: ${JSON.stringify(aqiResultCondition)}`);
 
-    let minAQI = await AqiRecords.find(aqiResultCondition).sort({ lastUpdated: 1 }).limit(1);
-    let maxAQI = await AqiRecords.find(aqiResultCondition).sort({ lastUpdated: -1 }).limit(1);
+    let minAQI = await AqiRecords.find(aqiResultCondition).sort({ lastUpdated: -1 }).limit(1);
+    let maxAQI = await AqiRecords.find(aqiResultCondition).sort({ lastUpdated: 1 }).limit(1);
 
     return {
         minAQI,
