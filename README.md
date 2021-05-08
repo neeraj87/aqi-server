@@ -4,6 +4,7 @@
 
 ## Project timeline
 Time taken: 2 days
+
 List of features built:
 1. Database setup
 2. Reading AQI data from the WebSocket and saving hourly AQI data in the database
