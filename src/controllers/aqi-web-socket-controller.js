@@ -42,7 +42,7 @@ exports.callAQIWebSocket = () => {
                     lastUpdated: Date.now()
                 });
             });
-            aqiDataController.createAQIData(aqiDataList);
+            //aqiDataController.createAQIData(aqiDataList);
         } catch (e) {
             console.log('--- error occurred: ' + e);
         }
